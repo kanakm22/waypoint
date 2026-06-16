@@ -10,6 +10,7 @@ const { commitRepo } = require("./controllers/commit");
 const { revertRepo } = require("./controllers/revert");
 
 yargs(hideBin(process.argv))
+  .command('start', "Start a new server", {}, startServer)
   .command(
     'init', // command
     "Initialise a new repository", // description 
@@ -26,7 +27,7 @@ yargs(hideBin(process.argv))
     },
     (argv) => {
       addRepo(argv.file);
-    } 
+    }
   )
   .command("commit <message>",
     "Commit the staged files",
@@ -38,7 +39,7 @@ yargs(hideBin(process.argv))
     },
     (argv) => {
       commitRepo(argv.message);
-    } 
+    }
   )
   .command('push', "Push commits to supabase", {}, pushRepo)
   .command('pull', "Pull commits from supabase", {}, pullRepo)
@@ -56,3 +57,7 @@ yargs(hideBin(process.argv))
   )
   .demandCommand(1, "You need at least one command")
   .help().argv;
+
+  function startServer(){
+    console.log("server logic called!");
+  }
