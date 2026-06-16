@@ -50,7 +50,9 @@ yargs(hideBin(process.argv))
         type: "string",
       });
     },
-    addRepo
+    (argv) => {
+      revertRepo(argv.commitID);
+    }
   )
   .demandCommand(1, "You need at least one command")
   .help().argv;
