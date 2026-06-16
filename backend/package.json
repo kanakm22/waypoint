@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "adm-zip": "^0.5.17",
+    "uuid": "^14.0.0",
+    "yargs": "^18.0.0"
+  }
+}
