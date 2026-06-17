@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser"); // json to js and vice versa
 const http = require("http"); //server
 const {Server} = require("socket.io");
+const mainRouter = require("./routes/main.router");
 
 
 
@@ -72,6 +73,7 @@ yargs(hideBin(process.argv))
     const app = express();
     const port = process.env.PORT || 3000;
     
+    app.use(cors({origin: "*"}))
     app.use(bodyParser.json());
     app.use(express.json());
 
@@ -84,11 +86,8 @@ yargs(hideBin(process.argv))
       console.error("unable to connect: ", err);
     })
 
-    app.use(cors({origin: "*"}))
-
-    app.get("/", (req, res)=>{
-      res.send("welcome");
-    });
+    app.use("/", mainRouter);
+    
 
     
     const user = "test";
