@@ -11,7 +11,15 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
     "adm-zip": "^0.5.17",
+    "body-parser": "^2.3.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "http": "^0.0.1-security",
+    "mongoose": "^9.7.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "socketio": "^1.0.0",
     "uuid": "^14.0.0",
     "yargs": "^18.0.0"
   }

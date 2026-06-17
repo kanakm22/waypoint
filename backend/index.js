@@ -1,3 +1,13 @@
+const express = require('express');
+const dotenv = require("dotenv");
+const cors = require("cors"); // used when server is not secure
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser"); // json to js and vice versa
+const http = require("http"); //server
+const {Server} = require("socket.io");
+
+
+
 const yargs = require('yargs');
 const { hideBin } = require("yargs/helpers");
 require('dotenv').config()
@@ -59,5 +69,55 @@ yargs(hideBin(process.argv))
   .help().argv;
 
   function startServer(){
-    console.log("server logic called!");
+    const app = express();
+    const port = process.env.PORT || 3000;
+    
+    app.use(bodyParser.json());
+    app.use(express.json());
+
+    const mongoURI = process.env.MONGODB_URI;
+
+    mongoose.connect(mongoURI).then(() =>{
+      console.log("mongodb connected");
+    })
+    .catch((err)=>{
+      console.error("unable to connect: ", err);
+    })
+
+    app.use(cors({origin: "*"}))
+
+    app.get("/", (req, res)=>{
+      res.send("welcome");
+    });
+
+    
+    const user = "test";
+    const httpServer = http.createServer(app);
+    const io = new Server(httpServer, {
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      },
+    });
+
+    io.on("connection", (socket)=>{
+      socket.on("joinRoom", (userID)=>{
+        user = userID;
+        console.log("======");
+        console.log(user);
+        console.log("======");
+        socket.join(userID);
+      });
+    })
+
+    const db = mongoose.connection;
+
+    db.once("open", async() =>{
+      console.log("CRUD operations called");
+    })
+
+    httpServer.listen(port, ()=>{
+      console.log(`server is running on port ${port}`);
+    })
+
   }
