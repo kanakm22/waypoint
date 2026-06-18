@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
+var ObjectId = require("mongodb").ObjectId;
 
 dotenv.config();
 
@@ -52,7 +53,7 @@ async function signup(req, res) {
   }
 }
 
-async function login (req, res) {
+async function login(req, res) {
   const { email, password } = req.body;
   try {
     await connectClient();
@@ -70,26 +71,60 @@ async function login (req, res) {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
-    res.json({token, userId: user._id});
+    res.json({ token, userId: user._id });
   } catch (err) {
     console.error("error during login: ", err.message);
     res.status(500).send("server error!");
   }
 }
 
-const getAllUsers = (req, res) => {
-  res.send("all users fetched");
+async function getAllUsers(req, res) {
+  try {
+    await connectClient();
+    const db = client.db("waypoint");
+    const usersCollection = db.collection("users");
+
+    const users = await usersCollection.find({}).toArray();
+    res.json(users);
+
+  } catch (err) {
+    console.error("error during fetching: ", err.message);
+    res.status(500).send("server error!");
+
+  }
+
 }
 
-const getUserProfile = (req, res) => {
-  res.send("profile fetched");
+async function getUserProfile(req, res) {
+  const currentID = req.params.id;
+
+  try {
+    await connectClient();
+    const db = client.db("waypoint");
+    const usersCollection = db.collection("users");
+
+    const user = await usersCollection.findOne({
+      _id: new ObjectId(currentID)
+    })
+
+    if (!user) {
+      return res.status(440).json({ message: "user not found!" })
+    }
+    res.send(user);
+
+
+
+  } catch (err) {
+    console.error("error during fetching: ", err.message);
+    res.status(500).send("server error!");
+  }
 }
 
-const updateUserProfile = (req, res) => {
+async function updateUserProfile(req, res) {
   res.send("profile updated");
 }
 
-const deleteUserProfile = (req, res) => {
+async function deleteUserProfile(req, res) {
   res.send("profile deleted");
 }
 
