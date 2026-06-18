@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect}from "react";
 import {useNavigate, useRoutes} from "react-router-dom";
 
 // pages list
@@ -42,7 +42,7 @@ const ProjectRoutes = () =>{
       element: <Login/>
     },
     {
-      path: "/aignup",
+      path: "/signup",
       element: <Signup/>
     },
     {

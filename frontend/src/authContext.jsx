@@ -1,6 +1,6 @@
 import React, {createContext, useState, useEffect, useContext} from "react";
 
-const AuthContext = createContext();
+const authContext = createContext();
 
 export const useAuth = () =>{ // custom hook
   return useContext(authContext);
@@ -19,5 +19,5 @@ export const AuthProvider = ({ children}) =>{
     currentUser, setCurrentUser
   }
 
-  return <AuthContext.Provider value={value}></AuthContext.Provider>
+  return <authContext.Provider value={value}>{children}</authContext.Provider>
 }
