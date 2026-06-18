@@ -14,7 +14,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
   },
-  repositories: [
+  repos: [
     {
       default: [],
       type: Schema.Types.ObjectId,
