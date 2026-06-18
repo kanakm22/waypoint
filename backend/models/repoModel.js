@@ -1,4 +1,5 @@
-const mongoose, {Schema} = require("mongoose");
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const RepositorySchema = new Schema({
   name: {
@@ -32,4 +33,4 @@ const RepositorySchema = new Schema({
 
 const Repository = mongoose.model("Repository", RepositorySchema);
 
-export default Repository;
+module.exports = Repository;

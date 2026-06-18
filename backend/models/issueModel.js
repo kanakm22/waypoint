@@ -1,5 +1,5 @@
-const mongoose, {Schema} = require("mongoose");
-
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 const IssueSchema = new Schema({
   title: {
     type: String,
@@ -22,4 +22,4 @@ const IssueSchema = new Schema({
 
 const Issue = mongoose.model("Issue", IssueSchema);
 
-export default Issue;
+module.exports = Issue;
