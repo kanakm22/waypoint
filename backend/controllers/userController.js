@@ -44,7 +44,7 @@ async function signup(req, res) {
     }
 
     const result = await usersCollection.insertOne(newUser);
-    const token = jwt.sign({ id: result.insertedId }, "waypoint_secret_key_123", { expiresIn: "1h" })
+    const token = jwt.sign({ id: result.insertedId }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
     res.json({ token })
   } catch (err) {
     console.error("error during signup: ", err.message);
@@ -52,8 +52,29 @@ async function signup(req, res) {
   }
 }
 
-const login = (req, res) => {
-  res.send("logging in");
+async function login (req, res) {
+  const { email, password } = req.body;
+  try {
+    await connectClient();
+    const db = client.db("waypoint");
+    const usersCollection = db.collection("users");
+
+    const user = await usersCollection.findOne({ email });
+    if (!user) {
+      return res.status(500).json({ message: "invalid credentials" })
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(500).json({ message: "invalid credentials" })
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
+    res.json({token, userId: user._id});
+  } catch (err) {
+    console.error("error during login: ", err.message);
+    res.status(500).send("server error!");
+  }
 }
 
 const getAllUsers = (req, res) => {
