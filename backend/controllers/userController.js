@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ReturnDocument } = require("mongodb");
 const dotenv = require("dotenv");
 var ObjectId = require("mongodb").ObjectId;
 
@@ -121,11 +121,64 @@ async function getUserProfile(req, res) {
 }
 
 async function updateUserProfile(req, res) {
-  res.send("profile updated");
+  const currentID = req.params.id;
+  const { email, password } = req.body;
+
+  try {
+    await connectClient();
+    const db = client.db("waypoint");
+    const usersCollection = db.collection("users");
+
+    let updateFields = { email };
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      updateFields.password = hashedPassword;
+    }
+
+    const updatedUser = await usersCollection.findOneAndUpdate(
+      {
+        _id: new ObjectId(currentID),
+      },
+      { $set: updateFields },
+      { returnDocument: "after" }
+    );
+
+    if (!updatedUser) {
+      return res.status(440).json({ message: "user not found!" })
+    }
+
+    res.send(updatedUser);
+  } catch (err) {
+    console.error("error during updating: ", err.message);
+    res.status(500).send("server error!");
+  }
+
+
 }
 
 async function deleteUserProfile(req, res) {
-  res.send("profile deleted");
+  const currentID = req.params.id;
+
+  try{
+    await connectClient();
+    const db = client.db("waypoint");
+    const usersCollection = db.collection("users");
+
+    const result = await usersCollection.deleteOne({
+       _id: new ObjectId(currentID),
+    })
+
+    if (result.deleteCount == 0) {
+      return res.status(440).json({ message: "user not found!" })
+    }
+
+    res.json({message: "user profile deleted!"})
+
+  }catch (err) {
+    console.error("error during deleting: ", err.message);
+    res.status(500).send("server error!");
+  }
 }
 
 module.exports = {
