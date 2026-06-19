@@ -1,9 +1,10 @@
 .login-wrapper {
     color: #f1f6fd;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     font-family: "Asap", sans-serif;
     background-color: #0c1116;
+    overflow-x: hidden;
   }
   
   .login-logo-container {
@@ -25,6 +26,7 @@
     align-items: center;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
   }
   
   .login-box {
@@ -44,6 +46,7 @@
     width: 250px;
     height: 35px;
     background-color: #0c1116;
+    box-sizing: border-box;
     border-radius: 5px;
     padding: 0 1rem;
     border: 0.5px solid #f1f6fd;
@@ -69,7 +72,7 @@
   }
   
   .submit-btn {
-    background-color: #238636;
+    background-color: #044570;
     border: none;
     width: 250px;
     border-radius: 5px;
@@ -80,7 +83,7 @@
   }
   
   .submit-btn:hover {
-    background-color: #499458;
+    background-color: #044570;
     cursor: pointer;
   }
   
@@ -130,6 +133,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
   }
   
   .signup-button {

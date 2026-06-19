@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../authContext.jsx";
 
-// import {  Button } from "@primer/react";
+
 import { PageHeader } from "@primer/react";
 import {  Button } from "@primer/react";
 import "./auth.css";
@@ -11,7 +11,7 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const {currentUser, setCurrentUser} = useAuth();
+  const { setCurrentUser} = useAuth();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -22,7 +22,7 @@ const Signup = () => {
 
     try{
       setLoading(true);
-      const res = await axios.post("http://localhost:3000/signup",{
+      const res = await axios.post("http://localhost:3002/signup",{
         email: email,
         password: password,
         username: username,
