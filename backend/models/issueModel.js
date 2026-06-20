@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const IssueSchema = new Schema({
-  timestamps: true,
+  
   title: {
     type: String,
     required: true
