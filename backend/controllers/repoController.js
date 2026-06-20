@@ -89,16 +89,16 @@ async function fetchRepoByName(req, res) {
 }
 
 async function fetchRepoForCurrentUser(req, res) {
-  const userId = req.user;
+  const { userId } = req.params;
 
-  try{
-    const repos = await Repository.find({owner: userId});
+  try {
+    const repos = await Repository.find({ owner: userId });
 
-    if(!repos || repos.length == 0){
-      return res.staus(404).json({error: "user repositories not found"});
+    if (!repos || repos.length == 0) {
+      return res.status(404).json({ error: "user repositories not found" });
     }
 
-    res.json({message: "repositories found",repositories })
+    res.json({ message: "repositories found", repos });
 
   } catch (err) {
     console.error("error during repository fetching: ", err.message);
@@ -114,7 +114,7 @@ async function updateRepoById(req, res) {
     const repo = await Repository.findById(id);
 
     if(!repo){
-      return res.staus(404).json({error: "repository not found"});
+      return res.status(404).json({error: "repository not found"});
     }  
 
     repo.content.push(content);
@@ -141,7 +141,7 @@ async function toggleVisibilityById(req, res) {
     const repo = await Repository.findById(id);
 
     if(!repo){
-      return res.staus(404).json({error: "repository not found"});
+      return res.status(404).json({error: "repository not found"});
     }  
 
     repo.visibility = !repo.visibility;

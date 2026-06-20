@@ -16,12 +16,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   
 
-  // useEffect(() => { // so nobody is logged in
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("userId");
-  //   setCurrentUser(null);
-  // },[setCurrentUser])
-
   
 
   const handleLogin = async (e) => {
@@ -44,8 +38,9 @@ const Login = () => {
 
       window.location.href = '/';
     }catch(err){
+      setLoading(false);
       console.error(err);
-      alert("Login failed")
+      alert(err.response?.data?.message || "Login failed");
     }
   }
 
