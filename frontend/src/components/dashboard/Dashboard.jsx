@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
+import Navbar from "../Navbar";
 
 
 const Dashboard = () => {
@@ -53,50 +54,57 @@ const Dashboard = () => {
 
   }, [searchQuery, suggestedRepos]);
 
-  return <section id="dashboard">
-    <aside >
-      <h3>Suggested Repositories</h3>
-      {suggestedRepos.map((repo) => {
-        return (
-          <div key={repo._id}>
-            <h4>{repo.name}</h4>
-            <p>{repo.description}</p>
+  return (
+    <>
+      <Navbar />
+      <section id="dashboard">
+        <aside>
+          <h3>Suggested Repositories</h3>
+          {suggestedRepos.map((repo) => {
+            return (
+              <div key={repo._id}>
+                <h4>{repo.name}</h4>
+                <h4>{repo.description}</h4>
+              </div>
+            );
+          })}
+        </aside>
+        <main>
+          <h2>Your Repositories</h2>
+          <div id="search">
+            <input
+              type="text"
+              value={searchQuery}
+              placeholder="Search..."
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-        )
-
-      })}
-    </aside>
-
-    <main>
-      <h2>Your Repositories</h2>
-      <div id="search">
-        <input
-          type="text"
-          value={searchQuery}
-          placeholder="Search..."
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-      {searchResults.map((repo) => {
-        return (
-          <div key={repo._id}>
-            <h4>{repo.name}</h4>
-            <p>{repo.description}</p>
-          </div>
-        )
-
-      })}
-    </main>
-
-    <aside>
-      <h3>Upcoming Events</h3>
-      <ul>
-        <li>Tech conference - Dec 15</li>
-        <li>Webinar on Open Source - Jan 10</li>
-        <li>Hackathon Finale - Feb 22</li>
-      </ul>
-    </aside>
-  </section>
+          {searchResults.map((repo) => {
+            return (
+              <div key={repo._id}>
+                <h4>{repo.name}</h4>
+                <h4>{repo.description}</h4>
+              </div>
+            );
+          })}
+        </main>
+        <aside>
+          <h3>Upcoming Events</h3>
+          <ul>
+            <li>
+              <p>Tech Conference - Dec 15</p>
+            </li>
+            <li>
+              <p>Developer Meetup - Dec 25</p>
+            </li>
+            <li>
+              <p>React Summit - Jan 5</p>
+            </li>
+          </ul>
+        </aside>
+      </section>
+    </>
+  );
 }
 
 export default Dashboard;
