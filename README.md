@@ -36,7 +36,7 @@ Waypoint is a custom Version Control System (VCS) web application built to manag
 
 ---
 
-## Project Structure
+
 
 ## Project Structure
 
